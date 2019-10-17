@@ -1,0 +1,21 @@
+{
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "Atom One Dark",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "vue-html": "html",
+    "razor": "html",
+    "plaintext": "jade"
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "bracketPairColorizer.forceIterationColorCycle": true,
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "files.associations": {
+		"*.svg": "html"
+  },
+  "workbench.settings.openDefaultKeybindings": true,
+  "editor.autoClosingQuotes": "always",
+  "editor.autoClosingBrackets": "always",
+}
