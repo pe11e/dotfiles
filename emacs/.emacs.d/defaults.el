@@ -1,6 +1,16 @@
 ;; Defaults
+
+;; Font
 (set-frame-font "Source Code Pro for Powerline-14")
-(load-theme 'solarized-dark t)
+
+;; Theme
+(load-theme 'atom-one-dark t)
+
+;; Titlebar
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+(setq ns-use-proxy-icon nil)
+(setq frame-title-format nil)
 
 ;; Disable auto-save and auto-backup
 (setq auto-save-default nil)
@@ -9,6 +19,10 @@
 (setq version-control t)
 (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
+;; Put emacs first when open
+(x-focus-frame nil)
+
+;; Disable first hello/tutorial page
 (setq inhibit-startup-message t)
 
 ;; Scroll behaviour
@@ -31,21 +45,7 @@
  '(js2-basic-offset 2)
  '(js2-bounce-indent-p t))
 
-(setq mac-option-modifier 'none)
-(setq ns-function-modifier 'meta)
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; Neotree
-(setq neo-theme 'nerd)
-(custom-set-faces
- '(neo-banner-face ((t . (:inherit shadow))) t)
- '(neo-header-face ((t . (:inherit shadow))) t)
- '(neo-root-dir-face ((t . (:inherit link-visited :underline nil))) t)
- '(neo-dir-link-face ((t . (:inherit dired-directory))) t)
- '(neo-file-link-face ((t . (:inherit default))) t)
- '(neo-button-face ((t . (:inherit dired-directory))) t)
- '(neo-expand-btn-face ((t . (:inherit button))) t))
-
 (put 'dired-find-alternate-file 'disabled nil)
 
 (provide 'defaults)

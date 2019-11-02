@@ -17,6 +17,9 @@
             (setq indent-tabs-mode nil)))
 
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+
 (add-hook 'before-save-hook 'untabify-on-save)
 
 (provide 'hooks)

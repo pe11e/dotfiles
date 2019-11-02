@@ -6,8 +6,8 @@
 ;; Define the list of files to load
 (defvar *load-files*
   '(defaults
-    modes
     functions
+    modes
     key-bindings
     hooks
     custom-org-mode))
