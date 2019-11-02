@@ -18,4 +18,5 @@
   "workbench.settings.openDefaultKeybindings": true,
   "editor.autoClosingQuotes": "always",
   "editor.autoClosingBrackets": "always",
+  "editor.tabSize": 2,
 }
