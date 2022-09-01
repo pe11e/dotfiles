@@ -1,0 +1,12 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Pelle Schöld
+	email = 1358130+pe11e@users.noreply.github.com
+[pull]
+	rebase = true
+[fetch]
+	prune = true
