@@ -10,6 +10,15 @@ Create symlinks
 ln -s ~/.dotfiles/zsh/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/zsh/.zshenv ~/.zshenv
 ```
+
+## osx
+
+Sane defaults for osx
+
+```
+./.osx
+```
+
 ## homebrew
 
 Install homebrew and run `Brewfile`
