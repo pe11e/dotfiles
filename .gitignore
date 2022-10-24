@@ -1,3 +1,7 @@
 .DS_Store
-zsh/.zshsecrets
+zsh/.zshenvsecrets
+zsh/.zsh_history
+zsh/plugins
+zsh/themes
+
 nvim/plugin/

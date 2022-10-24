@@ -1,6 +1,7 @@
 # dotfiles
 a place where i keep my config
 
+make sure to clone this repo to your home directory
 
 ## symlinks
 

@@ -25,7 +25,6 @@ packer.startup(function()
   -- add you plugins:
   use 'neovim/nvim-lspconfig'
   use 'anott03/nvim-lspinstall'
-  use 'nvim-treesitter/nvim-treesitter'
   use 'ellisonleao/gruvbox.nvim'
   use 'rktjmp/lush.nvim'
   use 'nvim-lua/completion-nvim'
@@ -35,5 +34,3 @@ packer.startup(function()
 )
 
 require 'lsp'
-require 'treesitter'
-
