@@ -22,33 +22,6 @@ if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
 fi
 
-# Git
-alias ga='git add --all'
-alias gc="git commit"
-alias gca="git commit -a -m"
-alias gs="git status"
-alias gp="git push"
-alias gu="git pull"
-alias gd="clear && git diff | vim && git status"
-alias gb="git branch"
-alias gch="git checkout"
-alias gchb="git checkout -b"
-alias gm="git merge"
-alias gr="git rebase"
-alias gri="git rebase -i"
-alias grim="git rebase -i master"
-alias grint="git rebase --interactive"
-alias grinth="git rebase --interactive HEAD~"
-alias grod="git push origin --delete"
-alias fup="git reset --hard"
-alias gl="git clone"
-alias gd="git diff"
-alias gdt="git difftool"
-alias glg='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
-alias guo="git pull origin develop"
-alias gpo="git push origin develop"
-alias gap="git stash apply"
-
 # ------------------------------------
 # Docker alias and function
 # ------------------------------------
