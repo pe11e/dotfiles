@@ -15,7 +15,7 @@ eval "$(rbenv init -)"
 # aliases
 source $ZSH/aliases
 
-# settings
+# git settings
 source $ZSH/settings/git.zsh
 
 # Setup plugins
