@@ -5,3 +5,11 @@ zsh/plugins
 zsh/themes
 
 nvim/plugin/
+
+emacs/.config/emacs/auto-save-list
+emacs/.config/emacs/elpaca
+emacs/.config/emacs/tree-sitter
+emacs/.config/emacs/recentf
+emacs/.config/emacs/*.eld
+emacs/.config/emacs/projects
+emacs/.config/emacs/config.el
