@@ -353,7 +353,6 @@ Company is used for text completion.
      :hook (typescript-mode . lsp-deferred)
      :config 
       (setq typescript-indent-level 2))
-) 
 #+end_src
 
 * Tree-sitter
