@@ -18,6 +18,7 @@
   - [[#diminish][Diminish]]
   - [[#company][Company]]
 - [[#org-mode-source-code-tag-expantion][Org Mode Source Code Tag Expantion]]
+  - [[#org-mode-parentheses-missmatch-fix][Org mode parentheses missmatch fix]]
 - [[#sane-default-values][Sane default values]]
   - [[#disable-auto-save-and-auto-backup][Disable auto save and auto-backup]]
   - [[#scroll-behaviour][Scroll behaviour]]
@@ -29,6 +30,7 @@
 - [[#languages][Languages]]
   - [[#lsp][Lsp]]
   - [[#typescript][Typescript]]
+  - [[#scheme][Scheme]]
 - [[#tree-sitter][Tree-sitter]]
   - [[#install-language-sources][Install language sources]]
   - [[#remap-languages-major-modes][Remap languages major modes]]
@@ -40,36 +42,38 @@
 *** Install elpaca
 
 #+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.5)
+  (defvar elpaca-installer-version 0.8)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
   (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-				:ref nil
-				:files (:defaults (:exclude "extensions"))
-				:build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-	 (build (expand-file-name "elpaca/" elpaca-builds-directory))
-	 (order (cdr elpaca-order))
-	 (default-directory repo))
+                                :ref nil :depth 1
+                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                                :build (:not elpaca--activate-package)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+         (build (expand-file-name "elpaca/" elpaca-builds-directory))
+         (order (cdr elpaca-order))
+         (default-directory repo))
     (add-to-list 'load-path (if (file-exists-p build) build repo))
     (unless (file-exists-p repo)
       (make-directory repo t)
       (when (< emacs-major-version 28) (require 'subr-x))
       (condition-case-unless-debug err
-	  (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-		   ((zerop (call-process "git" nil buffer t "clone"
-					 (plist-get order :repo) repo)))
-		   ((zerop (call-process "git" nil buffer t "checkout"
-					 (or (plist-get order :ref) "--"))))
-		   (emacs (concat invocation-directory invocation-name))
-		   ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-					 "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-		   ((require 'elpaca))
-		   ((elpaca-generate-autoloads "elpaca" repo)))
-	      (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-	    (error "%s" (with-current-buffer buffer (buffer-string))))
-	((error) (warn "%s" err) (delete-directory repo 'recursive))))
+          (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                    ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                    ,@(when-let* ((depth (plist-get order :depth)))
+                                                        (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                    ,(plist-get order :repo) ,repo))))
+                    ((zerop (call-process "git" nil buffer t "checkout"
+                                          (or (plist-get order :ref) "--"))))
+                    (emacs (concat invocation-directory invocation-name))
+                    ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                          "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                    ((require 'elpaca))
+                    ((elpaca-generate-autoloads "elpaca" repo)))
+              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+            (error "%s" (with-current-buffer buffer (buffer-string))))
+        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
     (unless (require 'elpaca-autoloads nil t)
       (require 'elpaca)
       (elpaca-generate-autoloads "elpaca" repo)
@@ -101,7 +105,7 @@
 ;;Turns off elpaca-use-package-mode current declartion
 ;;Note this will cause the declaration to be interpreted immediately (not deferred).
 ;;Useful for configuring built-in emacs features.
-(use-package emacs :elpaca nil :config (setq ring-bell-function #'ignore))
+(use-package emacs :ensure nil :config (setq ring-bell-function #'ignore))
 
 ;; Don't install anything. Defer execution of BODY
 ;;(elpaca nil (message "deferred"))
@@ -166,8 +170,8 @@
 
      (leader-keys
       "w" '(:ignore t :wk "window")
-      "wv" '(evil-window-vsplit :wk "split window vertically")
-      "wh" '(evil-window-split :wk "split window horizontally")
+      "wE" '(evil-window-vsplit :wk "split window vertically")
+      "wR" '(evil-window-split :wk "split window horizontally")
       "wn" '(evil-window-new :wk "new window")
       "wd" '(evil-window-delete :wk "delete window")
       "wh" '(evil-window-left :wk "window left")
@@ -243,8 +247,6 @@
   (use-package all-the-icons-dired
    :init (setq all-the-icons-dired-monochrome nil)
    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
-
-
 #+end_src
 
 ** Projectile
@@ -285,6 +287,20 @@ Company is used for text completion.
 #+begin_src emacs-lisp
   (require 'org-tempo)
 #+end_src
+
+** Org mode parentheses missmatch fix
+#+begin_src emacs-lisp
+  (defun org-syntax-table-modify ()
+    "Modify `org-mode-syntax-table' for the current org buffer."
+    (modify-syntax-entry ?< "." org-mode-syntax-table)
+    (modify-syntax-entry ?> "." org-mode-syntax-table)
+    (modify-syntax-entry ?/ "." org-mode-syntax-table))
+
+  (add-hook 'org-mode-hook #'org-syntax-table-modify)
+#+end_src
+
+#+RESULTS:
+| #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | #[nil ((org-bullets-mode 1)) (t)] | toc-org-enable | #[nil ((electric-indent-local-mode -1)) nil] | org-syntax-table-modify | org-tempo-setup | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-fold-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes |
 
 
 * Sane default values
@@ -353,6 +369,27 @@ Company is used for text completion.
      :hook (typescript-mode . lsp-deferred)
      :config 
       (setq typescript-indent-level 2))
+#+end_src
+
+** Scheme
+#+begin_src emacs-lisp
+  (use-package racket-mode :ensure t)
+
+  (use-package ob
+    :ensure nil
+    :after (org racket-mode)
+    :config
+    (setq org-export-use-babel nil
+  	org-confirm-babel-evaluate nil)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (racket . t))))
+
+  (use-package ob-racket                               
+   :ensure (:host github :repo "hasu/emacs-ob-racket")
+   :after (org ob racket-mode))                                         
+
 #+end_src
 
 * Tree-sitter
