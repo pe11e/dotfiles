@@ -42,7 +42,7 @@
 *** Install elpaca
 
 #+begin_src emacs-lisp
-  (defvar elpaca-installer-version 0.8)
+  (defvar elpaca-installer-version 0.11)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
   (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -186,6 +186,10 @@
 
      (leader-keys
       "p" '(projectile-command-map :wk "projectile"))
+
+    (leader-keys
+      "o" '(:ignore t :wk "org")
+      "oe" '(org-babel-execute-src-block :wk "evaluate src block in buffer"))
 
      (leader-keys
       "f" '(:ignore t :wk "find")
